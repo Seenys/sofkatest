@@ -21,7 +21,12 @@ const SearchBar: React.FC<SearchBarProps> = ({
   return (
     <View style={styles.container}>
       <View style={styles.searchContainer}>
-        <AntDesign name="search1" size={20} color={Colors.text_blue} />
+        <AntDesign
+          name="search1"
+          size={20}
+          color={Colors.text_blue}
+          testID="search-icon"
+        />
         <TextInput
           style={styles.input}
           value={value}
@@ -31,7 +36,12 @@ const SearchBar: React.FC<SearchBarProps> = ({
         />
         {value.length > 0 && (
           <Pressable onPress={handleClear}>
-            <AntDesign name="close" size={20} color={Colors.text_blue} />
+            <AntDesign
+              name="close"
+              size={20}
+              color={Colors.text_blue}
+              testID="clear-icon"
+            />
           </Pressable>
         )}
       </View>
