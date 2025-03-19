@@ -20,9 +20,7 @@ const getProducts = async () => {
 };
 
 const createProduct = async (product: Product) => {
-  console.log(product, "product");
   const response = await axios.post(`${BASE_URL}/products`, product);
-  console.log(response, "response");
   return response.data.data;
 };
 

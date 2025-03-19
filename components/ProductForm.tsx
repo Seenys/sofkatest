@@ -9,7 +9,11 @@ import {
 } from "react-native";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ProductFormData, productSchema } from "../utils/schema";
+import {
+  ProductFormData,
+  createProductSchema,
+  editProductSchema,
+} from "../utils/schema";
 import Button from "./Button";
 import FormFields from "./FormFields";
 
@@ -22,6 +26,8 @@ const ProductForm: React.FC<ProductFormProps> = ({
   onSubmit,
   initialValues,
 }) => {
+  const isEditing = !!initialValues?.id;
+
   const {
     control,
     handleSubmit,
@@ -29,7 +35,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
     reset,
     formState: { errors, isSubmitting },
   } = useForm<ProductFormData>({
-    resolver: zodResolver(productSchema),
+    resolver: zodResolver(isEditing ? editProductSchema : createProductSchema),
     defaultValues: initialValues,
   });
 
@@ -40,7 +46,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
-        {initialValues?.id ? "Editar" : "Crear"} Registro
+        {isEditing ? "Editar" : "Crear"} Registro
       </Text>
       <KeyboardAvoidingView behavior="padding">
         <ScrollView
@@ -50,7 +56,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
           <FormFields
             control={control}
             errors={errors}
-            isEditing={!!initialValues?.id}
+            isEditing={isEditing}
             setValue={setValue}
           />
         </ScrollView>
@@ -63,9 +69,11 @@ const ProductForm: React.FC<ProductFormProps> = ({
           <Button onPress={handleSubmit(onSubmit)} variant="primary">
             <Text>Guardar</Text>
           </Button>
-          <Button onPress={handleReset} variant="secondary">
-            <Text>Reiniciar</Text>
-          </Button>
+          {!isEditing && (
+            <Button onPress={handleReset} variant="secondary">
+              <Text>Reiniciar</Text>
+            </Button>
+          )}
         </View>
       )}
     </View>

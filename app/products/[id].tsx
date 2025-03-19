@@ -1,9 +1,11 @@
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, router } from "expo-router";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { useProductsStore } from "../../store/useProductsStore";
 import { Product } from "../../types/products";
 import Button from "../../components/Button";
 import { Colors } from "../../utils/Colors";
+import Modal from "../../components/Modal";
+import { useState } from "react";
 
 const DetailsItem = ({ label, value }: { label: string; value: string }) => {
   return (
@@ -16,12 +18,18 @@ const DetailsItem = ({ label, value }: { label: string; value: string }) => {
 
 const ProductDetailScreen = () => {
   const { id } = useLocalSearchParams();
-  const { products } = useProductsStore();
+  const { products, deleteProduct } = useProductsStore();
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const product: Product | undefined = products.find((p) => p.id === id);
 
   if (!product) {
     return <Text>Producto no encontrado</Text>;
   }
+
+  const handleDelete = () => {
+    deleteProduct(product.id);
+    router.back();
+  };
 
   return (
     <View style={styles.container}>
@@ -51,13 +59,25 @@ const ProductDetailScreen = () => {
         </View>
       </View>
       <View style={styles.buttons}>
-        <Button onPress={() => {}} variant="secondary">
+        <Button
+          onPress={() => router.push(`/products/edit?id=${product.id}`)}
+          variant="secondary"
+        >
           <Text style={styles.buttonText}>Editar</Text>
         </Button>
-        <Button onPress={() => {}} variant="danger">
+        <Button onPress={() => setShowDeleteModal(true)} variant="danger">
           <Text style={[styles.buttonText, { color: "white" }]}>Eliminar</Text>
         </Button>
       </View>
+
+      <Modal
+        visible={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleDelete}
+        message={`¿Estás seguro que deseas eliminar el producto ${product.name}?`}
+        confirmText="Eliminar"
+        cancelText="Cancelar"
+      />
     </View>
   );
 };
