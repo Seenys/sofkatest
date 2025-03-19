@@ -13,6 +13,7 @@ const DetailsItem = ({ label, value }: { label: string; value: string }) => {
     </View>
   );
 };
+
 const ProductDetailScreen = () => {
   const { id } = useLocalSearchParams();
   const { products } = useProductsStore();

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { FlatList, Text, View } from "react-native";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 
 import { useProductsStore } from "../store/useProductsStore";
 import ProductItem from "../components/ProductItem";
@@ -9,7 +9,7 @@ import { Colors } from "../utils/Colors";
 
 const ProductListScreen: React.FC = () => {
   const { products, fetchProducts } = useProductsStore();
-
+  const router = useRouter();
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -25,7 +25,7 @@ const ProductListScreen: React.FC = () => {
         )}
         keyExtractor={(item) => item.id}
       />
-      <Button onPress={() => {}}>
+      <Button onPress={() => router.push("/products/add")}>
         <Text
           style={{ color: Colors.text_blue, fontSize: 16, fontWeight: "bold" }}
         >

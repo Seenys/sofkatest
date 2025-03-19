@@ -16,12 +16,13 @@ const BASE_URL = getBaseUrl();
 
 const getProducts = async () => {
   const response = await axios.get(`${BASE_URL}/products`);
-  console.log(response.data.data, "response");
   return response.data.data;
 };
 
 const createProduct = async (product: Product) => {
+  console.log(product, "product");
   const response = await axios.post(`${BASE_URL}/products`, product);
+  console.log(response, "response");
   return response.data.data;
 };
 
@@ -37,7 +38,8 @@ const deleteProduct = async (id: string) => {
 
 const verifyProductId = async (id: string) => {
   const response = await axios.get(`${BASE_URL}/products/verification/${id}`);
-  return response.data.data;
+
+  return response.data;
 };
 
 export {
