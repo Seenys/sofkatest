@@ -1,11 +1,11 @@
-import { useLocalSearchParams, router } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { useProductsStore } from "../../store/useProductsStore";
 import { Product } from "../../types/products";
 import Button from "../../components/Button";
 import { Colors } from "../../utils/Colors";
-import Modal from "../../components/Modal";
 import { useState } from "react";
+import Modal from "../../components/Modal";
 
 const DetailsItem = ({ label, value }: { label: string; value: string }) => {
   return (
@@ -21,6 +21,7 @@ const ProductDetailScreen = () => {
   const { products, deleteProduct } = useProductsStore();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const product: Product | undefined = products.find((p) => p.id === id);
+  const router = useRouter();
 
   if (!product) {
     return <Text>Producto no encontrado</Text>;
