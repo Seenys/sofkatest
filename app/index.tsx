@@ -1,20 +1,39 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect } from "react";
+import { FlatList, Text, View } from "react-native";
+import { Link } from "expo-router";
 
-export default function App() {
+import { useProductsStore } from "../store/useProductsStore";
+import ProductItem from "../components/ProductItem";
+import Button from "../components/Button";
+import { Colors } from "../utils/Colors";
+
+const ProductListScreen: React.FC = () => {
+  const { products, fetchProducts } = useProductsStore();
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View style={{ flex: 1, padding: 16 }}>
+      <FlatList
+        data={products}
+        renderItem={({ item }) => (
+          <Link href={`/products/${item.id}`}>
+            <ProductItem product={item} />
+          </Link>
+        )}
+        keyExtractor={(item) => item.id}
+      />
+      <Button onPress={() => {}}>
+        <Text
+          style={{ color: Colors.text_blue, fontSize: 16, fontWeight: "bold" }}
+        >
+          Agregar
+        </Text>
+      </Button>
     </View>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default ProductListScreen;
