@@ -26,11 +26,16 @@ const ProductForm: React.FC<ProductFormProps> = ({
     control,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
     defaultValues: initialValues,
   });
+
+  const handleReset = () => {
+    reset();
+  };
 
   return (
     <View style={styles.container}>
@@ -54,9 +59,14 @@ const ProductForm: React.FC<ProductFormProps> = ({
       {isSubmitting ? (
         <ActivityIndicator size="small" color="#0000ff" />
       ) : (
-        <Button onPress={handleSubmit(onSubmit)} variant="primary">
-          <Text>Guardar</Text>
-        </Button>
+        <View style={{ flexDirection: "column", gap: 10 }}>
+          <Button onPress={handleSubmit(onSubmit)} variant="primary">
+            <Text>Guardar</Text>
+          </Button>
+          <Button onPress={handleReset} variant="secondary">
+            <Text>Reiniciar</Text>
+          </Button>
+        </View>
       )}
     </View>
   );
